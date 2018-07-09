@@ -24,9 +24,9 @@ class base{
             }
         MYSQL * _mysql;
         int x;
-        static base* instancia;
+        static base *instancia;
     public:
-        static base *getinstacia(){
+        static base *Instancia(){
             if(instancia==NULL){
                 instancia = new base();
             }
@@ -78,5 +78,4 @@ class base{
             mysql_close(_mysql);
         }
 };
-
 #endif // _BASE_H_
