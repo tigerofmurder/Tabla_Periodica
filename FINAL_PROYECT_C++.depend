@@ -369,7 +369,7 @@
 
 1110297326 c:\tdm-gcc-32\include\allegro\inline\fix.inl
 
-1529431725 c:\users\jonat\desktop\proyecto_final\final_proyect_c++\include\tabla.h
+1531451145 c:\users\jonat\desktop\proyecto_final\final_proyect_c++\include\tabla.h
 	<iostream>
 	<stdlib.h>
 	<vector>
@@ -378,8 +378,9 @@
 	<mysql.h>
 	<mysqld_error.h>
 	<base.h>
+	<mol.h>
 
-1528320333 c:\users\jonat\desktop\proyecto_final\final_proyect_c++\include\base.h
+1531103034 c:\users\jonat\desktop\proyecto_final\final_proyect_c++\include\base.h
 	<stdlib.h>
 	<string>
 	<sstream>
@@ -474,7 +475,7 @@
 
 1301111161 c:\tdm-gcc-32\include\winbase.h
 
-1528475579 c:\tdm-gcc-32\include\wingdi.h
+1530136430 c:\tdm-gcc-32\include\wingdi.h
 
 1301111163 c:\tdm-gcc-32\include\winnls.h
 
@@ -630,4 +631,26 @@
 1499928932 c:\users\jonat\desktop\proyecto_final\mysql-connector-c-6.1.11-win32\include\mysql\psi\psi_base.h
 
 1500308250 c:\users\jonat\desktop\proyecto_final\mysql-connector-c-6.1.11-win32\include\mysqld_error.h
+
+1531452022 c:\users\jonat\desktop\proyecto_final\final_proyect_c++\include\mol.h
+	<gl/glu.h>
+	<GL/glut.h>
+	<stdlib.h>
+	<math.h>
+	<iostream>
+
+1301111165 c:\tdm-gcc-32\include\gl\glu.h
+	<stddef.h>
+	<GL/gl.h>
+
+1301111164 c:\tdm-gcc-32\include\gl\gl.h
+
+983719986 c:\tdm-gcc-32\include\gl\glut.h
+	<windows.h>
+	<stdlib.h>
+	<GL/gl.h>
+	<GL/glu.h>
+
+1341006774 c:\tdm-gcc-32\include\math.h
+	<_mingw.h>
 

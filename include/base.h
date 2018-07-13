@@ -8,21 +8,29 @@
 #include <iostream>
 using namespace std;
 class base{
-    MYSQL * _mysql;
-    int x;
-    public:
+    private:
         base(){
-            if(!(_mysql = mysql_init(0))){
-                cout << "Error" << endl;
-            }
-            else{
-                if(mysql_real_connect(_mysql, "localhost", "root", "", "banco", 3306, NULL, 0)){
-                    cout << "CONECTADO" << endl;
+                if(!(_mysql = mysql_init(0))){
+                    cout << "Error" << endl;
                 }
                 else{
-                    cout<< "NO CONECTADO" << endl;
+                    if(mysql_real_connect(_mysql, "localhost", "root", "", "banco", 3306, NULL, 0)){
+                        cout << "CONECTADO" << endl;
+                    }
+                    else{
+                        cout<< "NO CONECTADO" << endl;
+                    }
                 }
             }
+        MYSQL * _mysql;
+        int x;
+        static base *instancia;
+    public:
+        static base *Instancia(){
+            if(instancia==NULL){
+                instancia = new base();
+            }
+            return instancia;
         }
         int getnumber(int number){
             x=number;
@@ -70,5 +78,4 @@ class base{
             mysql_close(_mysql);
         }
 };
-
 #endif // _BASE_H_

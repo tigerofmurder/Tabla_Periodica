@@ -8,7 +8,7 @@
 #include <mysql.h>
 #include <mysqld_error.h>
 #include <base.h>
-
+#include <mol.h>
 
 
 #define MAX_ROW 10
@@ -26,15 +26,17 @@ int mapa[MAX_ROW][MAX_COL]={
     00,00,00,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,
 };
 
+base *base::instancia=NULL;
 
 using namespace std;
-class tabla:public base{
+class tabla{
     private:
         int vx,vy;
         int x;
         int y;
         bool button_down=false;
         string text_console;
+        int cant_element=0;
         BITMAP *buffer;
         PALLETE pallete;
         FONT *myfuente=load_font("font/simbolo.pcx",pallete,NULL);
@@ -70,11 +72,18 @@ class tabla:public base{
                 else if(mouse_x>29 && mouse_x<113 &&
                    mouse_y>605 && mouse_y<640){
                     blit(clean,buffer,0,0,0,0,1280,730);
+
                     if(mouse_b & 1){
-                        text_console="";
-                        clear_bitmap(console);
-                        //masked_blit(console,buffer,0,0,0,0,1280,730);
+                        //text_console="";
+                        std::cout<<cant_element<<text_console;
+                        COMPUESTO a;
+                        a.text(text_console,cant_element);
+                        a.iniciar();
+                        if (key[KEY_ESC]){
+                            a.salir();
+                        }
                     }
+
                 }
 
                 else if(mouse_x>0 && mouse_x<1280 &&
@@ -86,9 +95,10 @@ class tabla:public base{
 
                         if (!button_down){
                             if(mouse_b&1){
-                                getnumber(resultado);
+                                base::Instancia()->getnumber(resultado);
                                 textout_ex(console,lconso,textoff(resultado),164,220,0xFFFFFF,0x000000);
                                 button_down=true;
+                                cant_element++;
                             }
                         }
                         else{
@@ -114,10 +124,10 @@ class tabla:public base{
             destroy_bitmap(buffer);
         }
         void creado(BITMAP *p,int x){
-            getnumber(x);
-            textout_ex(p,lnum,getnumero(),240,100,0x000000,0xFFFFFF);
-            textout_ex(p,lnom,getnombre(),240,160,0x000000,0xFFFFFF);
-            textout_ex(p,myfuente,getsimbolo(),260,110,0x000000,0xFFFFFF);
+            base::Instancia()->getnumber(x);
+            textout_ex(p,lnum,base::Instancia()->getnumero(),240,100,0x000000,0xFFFFFF);
+            textout_ex(p,lnom,base::Instancia()->getnombre(),240,160,0x000000,0xFFFFFF);
+            textout_ex(p,myfuente,base::Instancia()->getsimbolo(),260,110,0x000000,0xFFFFFF);
             masked_blit(p,buffer,0,0,0,0,1280,730);
             if (!button_down){
                 if(mouse_b&1){
@@ -132,8 +142,8 @@ class tabla:public base{
             }
         }
         char *textoff(int x){
-            getnumber(x);
-            text_console=text_console + getsimbolo();
+            base::Instancia()->getnumber(x);
+            text_console=text_console + base::Instancia()->getsimbolo();
             char *ret = (char *)text_console.c_str();
             return ret;
         }
