@@ -1,34 +1,112 @@
 #ifndef _MOL_H
 #define _MOL_H
-
+#include <iostream>
+#include <vector>
 #include <gl/glu.h>
 #include <GL/glut.h>
 #include <stdlib.h>
 #include <math.h>
-#include <iostream>
 #define PI 3.14159265
+
+
+using namespace std;
 
 float rotacion_molecula = 0.0;
 
 int rotacion = 0;
 int traslacion = 0;
 
-class MOLECULA{
-    public:
-    MOLECULA(){
+
+class Molecula{
+public:
+    virtual void trabajar()=0;
+    virtual void cargaAcciones(vector<int> accion)=0;
+};
+
+Molecula *Mol;
+Molecula *Molecul;
+
+class MoleculaI : public Molecula {
+public:
+    vector<int> acciones;
+    MoleculaI(){}
+    void cargaAcciones(vector<int> accion){
+        this->acciones=accion;
+    }
+    void trabajar(){
+        for(int i=0;i<this->acciones.size();i++){
+            if(this->acciones[i]==1) this->getCompuesto();
+            else cout<<"No puedo realizar esta accion"<<endl;
+        }
+    }
+private:
+    void iniciar(){
+        cout<<"Iniciando la Composicion"<<endl;
+    }
+    void getCompuesto(){
         glPushMatrix();
         glRotatef(rotacion_molecula,0,0,1.0);
         glColor3f(1.0,1.0,0.0);
         glutWireSphere(1,30,30);
         glPopMatrix();
     }
-    void mol(int dist_mol_e,float grade,int z){
+};
+
+class MoleculaS : public Molecula {
+public:
+    vector<int> acciones;
+    MoleculaS(){}
+    void cargaAcciones(vector<int> accion){
+        this->acciones=accion;
+    }
+    void trabajar(){
+        for(int i=0;i<this->acciones.size();i++){
+            if(this->acciones[i]==1) this->getParts(dist_mol_e,grade,z);
+            else cout<<"No puedo realizar esta accion"<<endl;
+        }
+    }
+private:
+    int dist_mol_e;float grade;int z;
+    void start(){
+        cout<<"Starting Molecula Auxiliar"<<endl;
+    }
+    void getParts(int dist_mol,float grad,int z1){
+        dist_mol_e=dist_mol;grade=grad;z=z1;
         glPushMatrix();
         glTranslatef (dist_mol_e*cos(grade*PI/180),dist_mol_e*sin(grade*PI/180),z);
         glRotatef(0.0,0,0,1.0);
         glColor3f(0,1,-1);
         glutWireSphere(0.5,25,25);
         glPopMatrix();
+    }
+};
+
+class Builder{
+public:
+    Molecula *molecula;
+    vector<int> acciones;
+    Builder(){
+
+    }
+    void setMolecula(int i){
+        if(i==1) this->molecula = new MoleculaI;
+        else if (i==2) this->molecula = new MoleculaS;
+    }
+    void addGetCompuesto(){
+        this->acciones.push_back(1);
+    }
+    /*void addformar(){
+        this->acciones.push_back(2);
+    }
+    void addRevisar(){
+        this->acciones.push_back(3);
+    }
+    void addImposible(){
+        this->acciones.push_back(100);
+    }*/
+    Molecula *getMolecula(){
+        this->molecula->cargaAcciones(this->acciones);
+        return this->molecula;
     }
 };
 
@@ -59,17 +137,32 @@ class COMPUESTO{
             glColor3d(1,0,0);
 
             //MOLECULA
-            MOLECULA a;
+            //MOLECULA a;
+            Builder *a= new Builder;
+            a->setMolecula(1);
+            a->addGetCompuesto();
+            Molecula *Molecula = a->getMolecula();
+            Molecula->trabajar();
+
             for (int i=0;i<cantidad-1;i++){
                 if(i<4){
-                    a.mol(2,90*i,0);
+                    Builder *aix= new Builder;
+                    aix->setMolecula(2);
+                    aix->addGetCompuesto();
+                    //Molecula *Mol ;
+                    //Mol = b->getParts(2,90*i,0);
+                    Mol = aix->getMolecula();
+                    Mol->trabajar();
                 }
                 else{
-                    a.mol(0,90*i,2);
+                    Builder *c= new Builder;
+                    c->setMolecula(2);
+                    c->addGetCompuesto();
+                    //Molecula *Molecul = c->getParts(0,90*i,2);
+                    Molecul = c->getMolecula();
+                    Molecul->trabajar();
                 }
-
             }
-
             glutSwapBuffers();
         }
         static void idle(void){
@@ -149,6 +242,7 @@ class COMPUESTO{
             EXIT_SUCCESS;
         }
 };
+
 
 
 #endif

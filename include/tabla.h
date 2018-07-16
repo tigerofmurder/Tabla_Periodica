@@ -31,21 +31,22 @@ base *base::instancia=NULL;
 using namespace std;
 class tabla{
     private:
-        int vx,vy;
-        int x;
-        int y;
-        bool button_down=false;
-        string text_console;
-        int cant_element=0;
-        BITMAP *buffer;
-        PALLETE pallete;
-        FONT *myfuente=load_font("font/simbolo.pcx",pallete,NULL);
+        int vx,vy; //posicion de MOUSE
+        int x; // tamaño x de pantalla
+        int y; // tamaño y de pantala
+        bool button_down=false; //MOUSE VERIFICA Y DA UN SOLO CLICK
+        string text_console; // TEXTO QUE APARECE EN LA CONSOLA
+        int cant_element=0; // CANTADAD DE ELEMENTOS AGREGADOS  EN LA CONSOLA
+        int a_peso[]; //ARRAY DE OXIDACION
+        BITMAP *buffer; //buffer inicial
+        PALLETE pallete; //paleta de colores
+        FONT *myfuente=load_font("font/simbolo.pcx",pallete,NULL); //carga la fuente para escribir en pantalla
         FONT *lnom=load_font("font/nombre.pcx",pallete,NULL);
         FONT *lnum=load_font("font/numero.pcx",pallete,NULL);
         FONT *lconso=load_font("font/consola.pcx",pallete,NULL);
-        BITMAP *mundo = load_bitmap("background/background.bmp",NULL);
-        BITMAP *console = load_bitmap("background/console.bmp",NULL);
-        BITMAP *ptr;
+        BITMAP *mundo = load_bitmap("background/background.bmp",NULL); // background de tabla periodica
+        BITMAP *console = load_bitmap("background/console.bmp",NULL); // consola
+        //BITMAP *ptr; //ERA CHISTE Y EL LORITO DIJO JAJAJA
 
     public:
         tabla(int tx, int ty){
@@ -56,12 +57,14 @@ class tabla{
             position_mouse(32,692);
         }
         void start(){
-            BITMAP *exit=load_bitmap("background/exit.bmp",NULL);
-            BITMAP *clean=load_bitmap("background/clear.bmp",NULL);
+            BITMAP *exit=load_bitmap("background/exit.bmp",NULL); //boton salir
+            BITMAP *clean=load_bitmap("background/clear.bmp",NULL); //boton send
             bool salir=false;
             while (!salir){
-                masked_blit(console,buffer,0,0,0,0,1280,730);
+                masked_blit(console,buffer,0,0,0,0,1280,730); //poner pantalla cOnSoLa
                 blit(buffer,screen,0,0,0,0,1280,730);
+
+                //SALIR
                 if(mouse_x>29 && mouse_x<113 &&
                    mouse_y>664 && mouse_y<695){
                     blit(exit,buffer,0,0,0,0,1280,730);
@@ -69,13 +72,15 @@ class tabla{
                         salir=true;
                     }
                 }
+
+                //SEND
                 else if(mouse_x>29 && mouse_x<113 &&
                    mouse_y>605 && mouse_y<640){
                     blit(clean,buffer,0,0,0,0,1280,730);
 
                     if(mouse_b & 1){
                         //text_console="";
-                        std::cout<<cant_element<<text_console;
+                        std::cout<<cant_element<<text_console<<a_peso;
                         COMPUESTO a;
                         a.text(text_console,cant_element);
                         a.iniciar();
@@ -90,15 +95,18 @@ class tabla{
                     mouse_y>0 && mouse_y<730){
                     vx=mouse_x-25;
                     vy=mouse_y-34;
-                    int resultado=mapa[vy/75][vx/67];
+                    int resultado=mapa[vy/75][vx/67];//TAMAÑO DEL CUADRADO
                     if (resultado<118 && resultado>=1){
 
                         if (!button_down){
-                            if(mouse_b&1){
+                            if(mouse_b&1){ //SOLO UN CLICK
                                 base::Instancia()->getnumber(resultado);
                                 textout_ex(console,lconso,textoff(resultado),164,220,0xFFFFFF,0x000000);
                                 button_down=true;
+                                //char temp=(int)base::Instancia()->getpeso();
+                                //a_peso[cant_element]=temp;
                                 cant_element++;
+
                             }
                         }
                         else{

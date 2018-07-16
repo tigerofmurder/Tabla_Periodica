@@ -58,6 +58,7 @@
 		<Unit filename="include/base.h" />
 		<Unit filename="include/iniciar.h" />
 		<Unit filename="include/mol.h" />
+		<Unit filename="include/state.h" />
 		<Unit filename="include/tabla.h" />
 		<Unit filename="main.cpp" />
 		<Extensions>
